@@ -1,0 +1,761 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Arrastrar Elementos</title>
+    <link rel="shortcut icon" href="https://www.inacap.cl/web/template-aplicaciones/img/favicon.ico" />
+    <link rel="stylesheet" href="https://www.inacap.cl/web/template-aplicaciones/css/mdb.min.css">
+
+    <style>
+        .c-requerido{
+            color: #c00;
+            font-size: .75rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all .3s;
+        }
+        .dark .info-text{
+            color: #72a2d9;
+        }
+        .separator{
+            height: 1px;
+            background-color: #d8d8d8;
+            padding-left: 0;
+            padding-right: 0;
+            width: 100%;
+        }
+        .btn{
+            min-width: 90px;
+        }
+        table td .btn-link{
+            color: #1565C0;
+        }
+        .mx-h-btn{
+            max-height: 40px;
+        }
+        .btn-round{
+            min-width: initial;
+        }
+        .dark .table button{
+            color: #fff;
+        }
+        .clear-button,
+        .table button,
+        .footer-actions button{
+            border: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .btn-add{
+            border: none;
+            color: #666;
+            cursor: pointer;
+            border-bottom: 1px solid #666;
+            background-color: transparent;
+        }
+        .btn-default.btn:disabled{
+            background-color: #ccc!important;
+            color: #999!important;
+        }
+        
+        .button-link{
+            border: none;
+            background-color: transparent;
+        }
+        .button-link.active{
+            color: #c00;
+        }
+        
+        .card.no-card{
+            background-color: transparent;
+            box-shadow: none;
+            border: none;
+        }
+        /* MENU LATERAL */
+        
+        .btn-side{
+            cursor: pointer;
+        }
+        .side-navbar{
+            width: 400px;
+            height: 100%;
+            background-color: #fff;
+            z-index: 9;
+            position: fixed;
+            top: 48px;
+            left: 0;
+            overflow-x: scroll;
+        }
+        .dark .side-navbar{
+            background-color: #383838;
+        }
+        .dark .side-navbar button{
+            color: #fff;
+        }
+        
+        .side-navbar button{
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            width: 100%;
+            transition: all .3s;
+        }
+        .side-navbar button:hover{
+            background-color: #ddd;
+            transition: all .3s;
+        }
+        .side-navbar ul li:first-child button{
+            position: relative;
+        }
+        .side-navbar ul li:first-child button:after{
+            content: '';
+            width: 90%;
+            height: 1px;
+            position: absolute;
+            margin: 0 auto;
+            bottom: 0;
+            background: #ccc;
+        }
+        .side-navbar p{
+            margin-top: 10px;
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        
+        
+        .table-basic-scroll{
+            overflow: auto; 
+            position: relative; 
+            width: 100%;
+        }
+        .card-docente-categoria{
+            border-left: 8px solid #ccc;
+            cursor: pointer;
+            transition: all .3s;
+        }
+        .card-docente-categoria:hover{
+            opacity: 0.7;
+            transform: scale(.95);
+            transition: all .3s;
+        }
+        .card-docente-categoria .card-header{
+            border-bottom: none;
+        }
+        .card-docente-categoria .card-body{
+            font-size: 20px;
+        }
+        #categorizacion-docente .card-body span,
+        #categorizacion-acompanamiento-docente .card-body span{
+            color: #1565C0;
+        }
+        .dark #categorizacion-acompanamiento-docente .card-body span,
+        .dark #categorizacion-docente .card-body span{
+            color: #72a2d9;
+        }
+        #categorizacion-docente-mgdt .card-body span{
+            color: #EF6C00;
+        }
+        #categorizacion-evaluacion-docente .card-body span{
+            color: #4CAF50;
+        }
+        
+        
+        
+        .card-formacion-docente,
+        .card-formacion-docente .card-body,
+        .card-formacion-docente .card-body .row,
+        .card-becas,
+        .card-becas .card-body,
+        .card-becas .card-body .row{
+            min-height: 200px;
+        }
+        .num{
+            font-size: 2rem;
+            color: #999;
+        }
+        #ficha-docente img{
+            height: 135px;
+        }
+        
+        /* Card acompañamiento docente */
+        .container-icon-card{
+            width: 35px;
+            height: 35px;
+            color: #fff;
+            background-color: #ccc;
+            border-radius: 50%;
+        }
+        .acompanamiento-docente-proceso{
+            list-style: none;
+        }
+        .dark .button-footer-card.blue-text{
+            color: #72a2d9!important;
+        }
+        .button-footer-card{
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+        }
+        .card-procesos .card-footer{
+            border-top: 1px solid #ccc;
+        }
+        .card-proceso-estado{
+            font-size: 12px;
+        }
+        table#historial-categorizacion th:first-child{
+            width: 50%;
+        }
+        table#historial-categorizacion th:last-child{
+            width: 50%;
+        }
+        .btn-link{
+            text-decoration: underline;
+            color: #1565C0;
+        }
+        #card-detalle .card-header{
+            border-bottom: none;
+        }
+        .info-num{
+            padding: 0;
+            font-size: 2rem;
+        }
+        #card-detalle .row .col-md-3:nth-child(1) .card{
+            border-left: 10px solid #1565C0;
+        }
+        #card-detalle .row .col-md-3:nth-child(2) .card{
+            border-left: 10px solid #EF6C00;
+        }
+        #card-detalle .row .col-md-3:nth-child(3) .card{
+            border-left: 10px solid #A6DFD3;
+        }
+        .grafico-subdimension .grafico{
+            border-radius: 10px ;
+        }
+        .grafico.administrativo{
+            height: 90%;
+            background-color: #512DA8;
+        }
+        .grafico{
+            max-width: 100px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+        }
+        .grafico.disciplinar{
+            height: 50%;
+            background-color: #1565C0;
+        }
+        .grafico.pedagogico{
+            height: 80%;
+            background-color: #03A9F4;
+        }
+        .grafico.recomendacion{
+            height: 20%;
+            background-color: #4DD0E1;
+        }
+        .grafico-subdimension{
+            height: 300px;
+        }
+        
+        .total-de{
+            background-color: #1890FF;
+            color: #fff!important;
+        }
+        .de{
+            background-color: #B5DBFF;
+        }
+        .ni{
+            background-color: #C6E4FF;
+        }
+        .desa,
+        .total-des{
+            background-color: #DBEEFF;
+        }
+        .dark .de,
+        .dark .ni,
+        .dark .desa,
+        .dark .total-des{
+            color: #333!important;
+        }
+        #overlay-menu{
+            background-color: rgba(0,0,0,0.3);
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+        }
+        
+        /* CHECK RADIO */
+        .table-check-radio {
+            background-color: rgba(207, 218, 231, 0.8) !important;
+        }
+        /* STEPPER */
+        
+        .mobile-stepper-container {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+        
+        /* TOOLTIP */
+        .tooltip-inner{
+            font-size: 12px;
+        }
+        .tooltip-inner ul{
+            padding: 5px 10px;
+            list-style: none;
+            margin: 0;
+        }
+        .tooltip-inner ul li{
+            text-align: left;
+        }
+        .card-formacion-docente .card-header button,
+        .card-becas .card-header button,
+        .ver-ficha-docente{
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .dark .ver-ficha-docente{
+            color: #fff;
+        }
+        #resultados-asignaturas tbody tr td:first-child{
+            max-width: 150px;
+        }
+        .dark .card-formacion-docente .card-header i,
+        .dark .card-becas .card-header i{
+            color: #fff;;
+        }
+        
+        /* td a i{
+            text-decoration: none;
+        } */
+        .asignacion-visita{
+            cursor: pointer;
+        }
+        .asignacion-visita,
+        .asignacion-visita-seleccionado{
+            background-color: #f0f0f0;
+            border-radius: 30px;
+        }
+        .nombre-persona{
+            font-size: .875rem;
+        }
+        .carrera-persona{
+            font-size: .75rem;
+        }
+        .comite-lista-personas{
+            max-height: 60vh;
+            overflow-y: scroll;
+        }
+        .img-asignacion-visita img{
+            max-width: 62px;
+            max-height: 62px;
+            height: 100%;
+            width: 100%;
+            border-radius: 50%;
+        }
+        .detalle-text{
+            font-size: 0.8em;
+            color: #999;
+        }
+        .table-button{
+            cursor: pointer;
+        }
+        .no-label{
+            font-size: 0.8em !important;
+            color: #999;
+        }
+        
+        .malla-curricular .card{
+            padding: 8px;
+            min-height: 75px;
+            word-break: normal;
+            max-width: 185px;
+            justify-content: center;
+        }
+        .malla-curricular .card:hover{
+            background-color: #bac0c2;
+            color: #fff;
+        }
+        .malla-curricular .card.electivo:hover{
+            background-color: #e2a77b;
+        }
+        .dark .malla-curricular .card{
+            background-color: #555;
+        }
+        .dark .malla-curricular .card:hover{
+            background-color: #999;
+        }
+        .dark .malla-curricular .card.electivo:hover{
+            background-color: #3D6161!important;
+        }
+        .malla-curricular .title .title-semestre{
+            background-color: rgb(51,51,51);
+            color: #fff;
+            font-size: 1rem;
+        }
+        .malla-num span{
+            background-color: #666666;
+            color: #fff;
+            font-size: 10px;
+        }
+        .col-malla{
+            max-width: 200px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .legend{
+            font-size: .875rem;
+        }
+        .box{
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+        }
+        .pre-requisito .box{
+            background-color: rgba(21,101,192, 0.5);
+        }
+        .asig-referen .box{
+            background-color: rgba(9,153,153, 0.5);
+        }
+        .asig-requisito .box{
+            background-color: rgba(76,175,80, 0.5);
+        }
+        .electivos .box{
+            background-color: rgba(226,167,123,1);
+        }
+        .icon-empt,
+        .icon-certi{
+            height: 18px;
+            width: 18px;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-empt{
+            background-color: #000;
+        }
+        .icon-empt i,
+        .icon-certi i{
+            color: #fff;
+            font-size: 1rem !important;
+        }
+        .icon-certi.certificado-APP,
+        .icon-certi.edit-certificado-APP{
+            background-color: #df772a;
+        }
+        .icon-certi.certificado-intranet,
+        .icon-certi.edit-certificado-intranet{
+            background-color: #13b326;
+        }
+        .icon-certi.certificado-adjunto,
+        .icon-certi.edit-certificado-adjunto{
+            background-color: #EA047E;
+        }
+        .nombre-asignatura{
+            font-size: 14px;
+            max-height: 54px;
+            font-weight: bold;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-wrap: normal;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            line-height: 1.2;
+        }
+        .container-card .card-body{
+            height: 90px;
+        }
+        .malla-group{
+            background-color: #ccc;
+        }
+        .malla-curricular button i{
+            font-size: 18px !important;
+        }
+        .box-horas{
+            background-color: #ccc;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body id="appBody" class="d-flex flex-column">
+
+    <div class="page-content">
+
+        <div class="navbar-overlay"></div>
+
+        <div id="menuContent">
+            <!-- Loading Overlay -->
+            <div class="loading-backdrop" id="loadingOverlay">
+                <div class="loading-circle">
+                    <div class="preloader-wrapper big active">
+                        <div class="spinner-layer spinner-white-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="gap-patch">
+                                <div class="circle"></div>
+                            </div>
+                            <div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main class="container">
+
+            <section>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-12 d-flex align-items-end justify-content-between">
+                                <h4 class="float-left heading h4-responsive mb-0">Arrastrar Elementos</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body malla-curricular">
+                        <div class="row mb-4" id="detalle-container-malla">
+
+                            <div id="contenido-malla"></div>
+
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-8 d-flex flex-row justify-content-start">
+                                <div class="legend pre-requisito d-flex align-items-center flex-row mx-2">
+                                    <div class="box mr-3"></div> Cursos Pre-requisitos
+                                </div>
+                                <div class="legend asig-referen d-flex align-items-center flex-row mx-2">
+                                    <div class="box mr-3"></div> Asignaturas Referenciadas
+                                </div>
+                                <div class="legend asig-requisito d-flex align-items-center flex-row mx-2">
+                                    <div class="box mr-3"></div> Asignaturas Requisito Relacionada
+                                </div>
+                                <div class="legend electivos d-flex align-items-center flex-row mx-2">
+                                    <div class="box mr-3"></div> Electivos
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="row py-2 flex-row">
+
+                            <div class="col col-md-6  d-flex justify-content-start">
+
+                            </div>
+                            <div class="col col-md-6 d-flex justify-content-end">
+
+                                <button type="button" onclick="" class="btn btn-outline waves-effect waves-light">
+                                    <span>Nada</span>
+                                </button>
+
+                                <button type="button" onclick="" class="btn btn-default waves-effect waves-light">
+                                    <span>Nada</span>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <footer class="page-footer">
+        <div class="container py-3">
+            <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                <div class="logo-gst">
+                    <img src="http://www.inacap.cl/web/template-aplicaciones/img/logo-gst.png" alt="">
+                </div>
+                <span class="pl-2 pl-md-4">Gerencia de Sistemas y Tecnolog&iacute;as</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://www.inacap.cl/web/template-aplicaciones/js/jquery-3.3.1.min.js"></script>
+    <script src="https://www.inacap.cl/web/template-aplicaciones/js/popper.min.js"></script>
+    <script src="https://www.inacap.cl/web/template-aplicaciones/js/bootstrap.min.js"></script>
+    <script src="https://www.inacap.cl/web/template-aplicaciones/js/mdb.min.js"></script>
+    <script src="http://www.inacap.cl/web/template-aplicaciones/js/chosen.jquery.js"></script>
+    <script src="https://www.inacap.cl/web/template-aplicaciones/js/datepicker.js"></script>
+    <script src="http://www.inacap.cl/web/template-aplicaciones/js/datatables.min.js"></script>
+
+    <!-- Arrastre de elementos -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+
+        $(document).ready(function ()
+        {
+            // Activar selects
+            // $(".chosen-select").chosen({ disable_search_threshold: 10, no_results_text: "Sin Resultados para: ", width: "100%" });
+            // $(".mdb-select").material_select();
+
+            construirMalla();
+
+            //$('[data-toggle="tooltip"]').tooltip();   // Activar tooltips
+        });
+
+        function construirMalla()
+        {
+            var ncorrElemento = 1;
+
+            var cadena = [1,2,3,4,5].map(x => 
+            {
+                // El estilo border: 2px dashed #ccc fue agregado por mi
+
+                return `
+                <div class="col mb-4 col-malla d-flex flex-column" style="order:1;">
+
+                    <div class="title d-flex flex-column mb-1">
+
+                        <div class="title-semestre text-center">
+                            <p class="m-0 p-2">Contenedor ${x}</p>
+                        </div>
+
+                        <div class="malla-num d-flex flex-row mt-1 mb-2">
+                            <span class="col mr-1 text-center">ciclo 1</span>
+                            <span class="col ml-1 text-center">ciclo 2</span>
+                        </div>
+                        
+                        <div ncorr="${x}" class="contenedor-elementos-arrastre container-card d-flex flex-wrap" style="border: 2px dashed #ccc">
+
+                            ${[1,2,3].map(y => 
+                            {
+                                return `
+                                <div ncorr="${ncorrElemento}" class="elemento-arrastrar col-12 p-1" contenedor-origen-ncorr="${x}">
+
+                                    <div class="card mb-2 text-center">
+                                        <div class="card-body my-2">
+                                            <h5 class="nombre-asignatura">Elemento ${ncorrElemento++}</h5>
+                                            <div class="card-actions d-flex justify-content-between flex-row my-3">
+
+                                                <div class="card-asignatura-empt d-flex justify-content-start my-2">
+                                                    <div class="icon-empt" data-toggle="tooltip" data-placement="bottom" title="Asignatura con articulación EMPT">
+                                                        <i class="material-icons icon-lg">insert_link</i>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex flex-row ml-auto flex-wrap">
+                                                    <div class="card-asignatura-certificado d-flex justify-content-end my-2 mr-1">
+
+                                                        <div class="icon-certi certificado-intranet" data-toggle="tooltip"
+                                                        data-placement="bottom" title="certificado-intranet">
+                                                            <i class="material-icons icon-lg">verified</i>
+                                                        </div>
+
+                                                        <div class="icon-certi certificado-APP" data-toggle="tooltip" data-placement="bottom" title="certificado-APP">
+                                                            <i class="material-icons icon-lg">verified</i>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                `;
+                            }).join("")}
+
+                        </div>
+                    </div>
+
+                </div>
+                `;
+            })
+            .join("");
+        
+            document.querySelector("#detalle-container-malla").innerHTML = cadena;
+            definirMecanismoDeArrastre();
+        }
+
+        function definirMecanismoDeArrastre() 
+        {
+            $(".elemento-arrastrar").draggable({
+                revert: "invalid" // Revertir el elemento si no es soltado en un droppable
+            });
+
+            $(".contenedor-elementos-arrastre").droppable({
+                accept: ".elemento-arrastrar", 
+                drop: (event, ui) => 
+                {
+                    const elementoArrastrado = ui.draggable;
+                    const contenedorElementosArrastre = $(event.target);
+
+                    const ncorrElemento = elementoArrastrado.attr("ncorr");
+                    const ncorrContenedor = contenedorElementosArrastre.attr("ncorr");
+                    const ncorrContenedorOrigen = elementoArrastrado.attr("contenedor-origen-ncorr");
+
+                    if (ncorrContenedor != ncorrContenedorOrigen) 
+                    {
+                        elementoArrastrado.attr("contenedor-origen-ncorr", ncorrContenedor);
+
+                        setTimeout(() => 
+                        {
+                            let mensaje = `ncorr Elemento arrastrado: ${ncorrElemento} \n
+                            ncorr Contenedor destino: ${ncorrContenedor} \n
+                            ncorr Contenedor de origen: ${ncorrContenedorOrigen}`;
+
+                            console.log(mensaje);
+                        }, 300);
+                    }
+
+                    contenedorElementosArrastre.append(ui.helper);  // Agregar el elemento arrastrado al contenedor de destino
+                    ui.helper.css({top: 0, left: 0});   // Ajustar la posición del elemento arrastrado
+                }
+            });
+
+            //=====================================>>>>
+            // Manejar el z-index (Solo para Mdbootstrap)
+
+            // Quita los event listeners existentes
+            $(document).off("mousedown", ".elemento-arrastrar");
+            $(document).off("mouseup", ".elemento-arrastrar");
+
+            // Agrega los event listeners nuevamente
+            $(document).on("mousedown", ".elemento-arrastrar", function() {
+                $(this).data("original-z-index", $(this).css("z-index"));
+                $(this).css("z-index", "9999");
+            });
+
+            $(document).on("mouseup", ".elemento-arrastrar", function() {
+                $(this).css("z-index", $(this).data("original-z-index"));
+            });
+
+            //=====================================>>>>
+        }
+
+    </script>
+
+</body>
+
+</html>
